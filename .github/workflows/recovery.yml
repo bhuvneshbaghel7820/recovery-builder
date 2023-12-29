@@ -22,14 +22,14 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: #ubuntu-20.04
 
     steps:
-       - name: Checkout
-         uses: actions/checkout@master
+       - name: "Checkout"
+         uses: "actions/checkout@master"
          
 
-       - name: Initializing environment
+       - name: #Initializing environment
          run: |
             sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
             docker rmi `docker images -q`
@@ -42,7 +42,7 @@ jobs:
             sudo curl --create-dirs -L -o /usr/local/bin/repo -O -L https://storage.googleapis.com/git-repo-downloads/repo
             sudo chmod a+rx /usr/local/bin/repo
             
-       - name: Sync recovery source and device tree
+       - name: #Sync recovery source and device tree
          run: |
              mkdir work
              cd work
@@ -50,17 +50,17 @@ jobs:
              repo sync -c -j4 --force-sync --no-clone-bundle --no-tags
              git clone $DT_LINK --depth=1 --single-branch $DT_PATH
              
-       - name: Build
+       - name: "Build"
          run: |
               cd work
               . build/envsetup.sh &&lunch omni_$DEVICE-eng &&export ALLOW_MISSING_DEPENDENCIES=true && mka $TARGET
              
-       - name: Release recovery image
+       - name: #Release recovery image
          uses: softprops/action-gh-release@v1
          env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          with:
           tag_name: v1.1
-          name: TWRP-3.7.0_9.1 (Vince)
+          name: "orange_fox_12.1"
           files: | 
             work/out/target/product/vince/recovery.img
